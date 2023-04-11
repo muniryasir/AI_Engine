@@ -1,14 +1,15 @@
 from flask import Flask
 app = Flask(__name__)
 import os
+import requests
 
 # python3 -m flask run
-import simfin as sf
-from simfin.names import *
+# import simfin as sf
+# from simfin.names import *
 
-sf.set_api_key('a3dde4ef-6674-4b65-84a3-a9ff2e7c81f2')
-sf.set_data_dir(os.getcwd()+'/simfin_data/')
-df = sf.load_income(variant='annual', market='us')
+# sf.set_api_key('a3dde4ef-6674-4b65-84a3-a9ff2e7c81f2')
+# sf.set_data_dir(os.getcwd()+'/simfin_data/')
+# df = sf.load_income(variant='annual', market='us')
 
 @app.route("/")
 def home():
@@ -16,5 +17,8 @@ def home():
 
 @app.route("/stockdata")
 def stockdata():
-    print(df.loc['MSFT', [REVENUE, NET_INCOME]])
+    # print(df.loc['MSFT'])
+    f = open("stockdata.json", "wb")
+    # x = requests.get('http://api.marketstack.com/v1/eod?access_key=f7d07c1e14f18faaa3eb88fa3e75f99d&symbols=MSFT,AAPL,GOOGL,AMZN,BABA,FB,V,JPM,TSM,INTC,KO')
+    # f.write(x.content)
     return "df.loc['MSFT', [REVENUE, NET_INCOME]]"
