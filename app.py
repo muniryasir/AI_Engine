@@ -2,6 +2,8 @@ from flask import Flask
 app = Flask(__name__)
 import os
 import requests
+import json
+import jsonpickle
 
 # python3 -m flask run
 # import simfin as sf
@@ -18,7 +20,27 @@ def home():
 @app.route("/stockdata")
 def stockdata():
     # print(df.loc['MSFT'])
-    f = open("stockdata.json", "wb")
+    # f = open("stockdata.json", "wb")
     # x = requests.get('http://api.marketstack.com/v1/eod?access_key=f7d07c1e14f18faaa3eb88fa3e75f99d&symbols=MSFT,AAPL,GOOGL,AMZN,BABA,FB,V,JPM,TSM,INTC,KO')
     # f.write(x.content)
-    return "df.loc['MSFT', [REVENUE, NET_INCOME]]"
+      
+    # Opening JSON file
+    f = open('stockdata.json')
+    
+    # returns JSON object as 
+    # a dictionary
+    data = json.load(f)
+    
+    # Iterating through the json
+    # list
+    # for i in data['data']:
+    #     print(i)
+    #     res = i
+    # res = data['data']
+    res = list(filter(lambda x:x["symbol"]=="MSFT",data['data']))
+    # result = [x for x in data if x["symbol"]=="MSFT"]
+    print(res)
+    # Closing file
+    f.close()
+    return jsonpickle.encode(len(res))
+    # return res
