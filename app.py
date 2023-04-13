@@ -37,10 +37,17 @@ def stockdata():
     #     print(i)
     #     res = i
     # res = data['data']
-    res = list(filter(lambda x:x["symbol"]=="MSFT",data['data']))
+    companies = ["MSFT", "V", "AAPL", "GOOGL", "JPM", "KO", "AMZN", "TSM", "INTC", "BABA"]
+    mydic = {}
+    count = 0
+    for symbol in companies:
+        res = list(filter(lambda x:x["symbol"]==symbol,data['data']))
     # result = [x for x in data if x["symbol"]=="MSFT"]
-    print(res)
+        mydic[companies[count]] = res[0]
+        count = count +1
+
+    print(mydic)
     # Closing file
     f.close()
-    return jsonpickle.encode(len(res))
-    # return res
+    return jsonpickle.encode(mydic)
+    # return  jsonpickle.encode(y)
