@@ -38,12 +38,15 @@ def stockdata():
     #     res = i
     # res = data['data']
     companies = ["MSFT", "V", "AAPL", "GOOGL", "JPM", "KO", "AMZN", "TSM", "INTC", "BABA"]
+    companiesNames = ["Microsoft Corporation", "Visa Inc", "Apple Inc", "Alphabet Inc", "JPMorgan Chase", "Coca-Cola", "Amazon.com Inc", "Taiwan Semiconductor Manufacturing", "Intel Corp", "Alibaba Group"]
     mydic = {}
     count = 0
     for symbol in companies:
         res = list(filter(lambda x:x["symbol"]==symbol,data['data']))
     # result = [x for x in data if x["symbol"]=="MSFT"]
-        mydic[companies[count]] = res[0]
+        res1 = dict(res[0])
+        res1["name"]= companiesNames[count]
+        mydic[companies[count]] = res1
         count = count +1
 
     print(mydic)
