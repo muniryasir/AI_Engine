@@ -53,3 +53,4 @@ ufw==0.36
 unattended-upgrades==0.1
 urllib3==1.22
 zope.interface==4.3.2
+flask==1.1.4
