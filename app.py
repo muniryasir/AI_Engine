@@ -15,7 +15,7 @@ import jsonpickle
 
 @app.route("/")
 def home():
-    return "Hello World! I'm using Flask."
+    return "Hello World! I'm using Flask2."
 
 @app.route("/stockdata")
 def stockdata():
