@@ -4,6 +4,10 @@ import os
 import requests
 import json
 import jsonpickle
+from flask_cors import CORS, cross_origin
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # python3 -m flask run
 # import simfin as sf
@@ -14,10 +18,12 @@ import jsonpickle
 # df = sf.load_income(variant='annual', market='us')
 
 @app.route("/")
+@cross_origin()
 def home():
     return "Hello World! I'm using Flask2."
 
 @app.route("/stockdata")
+@cross_origin()
 def stockdata():
     # print(df.loc['MSFT'])
     # f = open("stockdata.json", "wb")
