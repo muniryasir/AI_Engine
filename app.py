@@ -50,9 +50,23 @@ def stockdata():
     for symbol in companies:
         res = list(filter(lambda x:x["symbol"]==symbol,data['data']))
     # result = [x for x in data if x["symbol"]=="MSFT"]
-        res1 = dict(res[0])
-        res1["name"]= companiesNames[count]
-        mydic[companies[count]] = res1
+        
+        datalist = dict()
+        countD = 0
+        for dataL in res:
+            datadict = {}
+            tempdic = dict(dataL)
+            print(tempdic)
+            datadict["closeprice"] = tempdic['close']
+            datadict["date"] = tempdic["date"]
+            # datadict["name"] = tempdic["name"]
+            # res1 = dict(data)
+            datalist[countD] = datadict  
+            countD = countD + 1  
+        datalist['name'] = companiesNames[count]    
+        mydic[symbol]= datalist
+        # mydic["name"]= companiesNames[count]
+        # mydic[companies[count]] = res1
         count = count +1
 
     print(mydic)
