@@ -4,11 +4,12 @@ import os
 import requests
 import json
 import jsonpickle
+import statistics
 from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-
+from flask import request as frequests
 # python3 -m flask run
 # import simfin as sf
 # from simfin.names import *
@@ -74,3 +75,47 @@ def stockdata():
     f.close()
     return jsonpickle.encode(mydic)
     # return  jsonpickle.encode(y)
+
+@app.route("/prediction")
+@cross_origin()
+def stockprediction():
+    symbol = frequests.args.get('symbol')
+    # print(symbol)
+    f = open('stockdata.json')
+    data = json.load(f)
+    res = list(filter(lambda x:x["symbol"]==symbol,data['data']))
+    pricePerCycle = list()
+    for item in res:
+        pricePerCycle.append(item["close"])
+    # print(pricePerCycle)
+    sampleList, trendList = createTrendList(pricePerCycle)
+    createPredictionList(sampleList, trendList)
+    return "working "+symbol
+
+def createTrendList(sampleList):
+    trendList = list()
+   
+    # foo = somevalue
+    prevItem = nextItem = None
+    l = len(sampleList)
+    for index, item in enumerate(sampleList):
+        if index > 0:
+            prevItem = sampleList[index - 1]
+        if index < (l - 1):
+            next_ = sampleList[index + 1]
+        if index == 0:
+            prevItem = 0
+        currentItem = sampleList[index]
+        trendList.append(prevItem-currentItem)
+    
+    # print(trendList)
+    return sampleList, trendList
+
+def createPredictionList(sampleList, trendList):
+    # print(sampleList, trendList)
+    mean = statistics.mean(sampleList)
+    stdDeviation = statistics.stdev(sampleList)
+    print("mean :",mean)
+    print("stddev :",stdDeviation)
+    # predictedList
+    return 0
