@@ -10,6 +10,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 from flask import request as frequests
+from random import *
 # python3 -m flask run
 # import simfin as sf
 # from simfin.names import *
@@ -88,9 +89,10 @@ def stockprediction():
     for item in res:
         pricePerCycle.append(item["close"])
     # print(pricePerCycle)
-    sampleList, trendList = createTrendList(pricePerCycle)
-    createPredictionList(sampleList, trendList)
-    return "working "+symbol
+    
+    trendList = createTrendList(pricePerCycle)
+    predictedList = createPredictionList(pricePerCycle, trendList)
+    return "working "+str(predictedList)
 
 def createTrendList(sampleList):
     trendList = list()
@@ -109,13 +111,22 @@ def createTrendList(sampleList):
         trendList.append(prevItem-currentItem)
     
     # print(trendList)
-    return sampleList, trendList
+    return trendList
 
 def createPredictionList(sampleList, trendList):
     # print(sampleList, trendList)
     mean = statistics.mean(sampleList)
     stdDeviation = statistics.stdev(sampleList)
+    # print("sampleList :",list(reversed(sampleList)))
     print("mean :",mean)
     print("stddev :",stdDeviation)
+    predictedList = list()
     # predictedList
-    return 0
+    for dayTrendPrev in list(reversed(sampleList)):
+        maxmin = list([dayTrendPrev, mean])
+        dayTrendPossibleChange = mean - dayTrendPrev
+        dayTrendPossibleChangePerc = (dayTrendPossibleChange*100)/max(maxmin) # corresponds to dayTrend
+        chance = randint(1, 100)/100
+        dayTrend = mean + (max(maxmin)*dayTrendPossibleChangePerc/100)*chance
+        predictedList.append(dayTrend)
+    return predictedList
